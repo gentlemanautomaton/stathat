@@ -7,10 +7,10 @@ import (
 )
 
 // StatList returns a list of your stats.
-// There is a maximum of 3000 results returned per the StatHat API.
-// To get more, run it again with an offset of 3000 (or in multiples of 3000).
+// There is a maximum of 10000 results returned per the StatHat API.
+// To get more, run it again with an offset of 10000 (or in multiples of 10000).
 func (s StatHat) StatList(offset int) ([]StatItem, error) {
-	req, err := http.NewRequest(http.MethodGet, s.urlPrefix()+`/statlist?offset=`+strconv.Itoa(offset), nil)
+	req, err := http.NewRequest(http.MethodGet, s.apiPrefix()+`/statlist?offset=`+strconv.Itoa(offset), nil)
 	if err != nil {
 		return nil, err
 	}
@@ -19,7 +19,7 @@ func (s StatHat) StatList(offset int) ([]StatItem, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
-	list := make([]StatItem, 0, 3000)
+	list := make([]StatItem, 0, 10000)
 	j := json.NewDecoder(resp.Body)
 	err = j.Decode(&list)
 	for i := range list {
@@ -41,7 +41,7 @@ func (s StatHat) StatListAll() ([]StatItem, error) {
 		if err != nil {
 			return all, err
 		}
-		if len(list) < 3000 {
+		if len(list) == 0 {
 			break
 		}
 	}

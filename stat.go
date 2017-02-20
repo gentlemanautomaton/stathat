@@ -9,7 +9,7 @@ import (
 // Stat returns a single stat by name.
 func (s StatHat) Stat(name string) (StatItem, error) {
 	item := StatItem{}
-	req, err := http.NewRequest(http.MethodGet, s.urlPrefix()+`/stat?name=`+url.PathEscape(name), nil)
+	req, err := http.NewRequest(http.MethodGet, s.apiPrefix()+`/stat?name=`+url.PathEscape(name), nil)
 	if err != nil {
 		return item, err
 	}

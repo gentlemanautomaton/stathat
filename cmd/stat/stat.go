@@ -15,7 +15,7 @@ func main() {
 		fmt.Println("Provide stat name as second argument.")
 		os.Exit(1)
 	}
-	s := stathat.New(os.Args[1])
+	s := stathat.New().Token(os.Args[1])
 	stat, err := s.Stat(os.Args[2])
 	if err != nil {
 		fmt.Println(err.Error())

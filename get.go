@@ -36,7 +36,7 @@ type Datapoint struct {
 // See https://www.stathat.com/manual/export for accepted time unit format for `interval` and `period`.
 // `stats` can be range from one to five stats.  Stats listed beyond five are ignored.
 func (s StatHat) Get(opts GetOptions, stats ...string) ([]Dataset, error) {
-	rawurl := s.urlPrefix() + `/data/`
+	rawurl := s.apiPrefix() + `/data/`
 
 	if len(stats) == 0 {
 		return nil, ErrNotFound // FIXME: maybe not the best error to return

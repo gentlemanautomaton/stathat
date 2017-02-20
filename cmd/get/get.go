@@ -25,7 +25,7 @@ func main() {
 	if *start > 0 {
 		startTime = time.Unix(*start, 0)
 	}
-	s := stathat.New(*token)
+	s := stathat.New().Token(*token)
 	ds, err := s.Get(stathat.GetOptions{
 		Start:    &startTime,
 		Period:   *period,

@@ -33,7 +33,7 @@ func main() {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	s := stathat.New(token)
+	s := stathat.New().Token(token)
 	list, err := s.StatListAll()
 	if err != nil {
 		fmt.Println(err.Error())

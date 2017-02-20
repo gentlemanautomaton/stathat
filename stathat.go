@@ -1,17 +1,48 @@
 package stathat
 
+import "errors"
+
 // StatHat is a StatHat which does StatHat things
-type StatHat string
-
-// New returns a StatHat using the provided access token (see https://www.stathat.com/access)
-func New(token string) StatHat {
-	return StatHat(token)
+type StatHat struct {
+	token string
+	ezkey string
 }
 
-func (s StatHat) String() string {
-	return string(s)
+// ErrMissingToken means the `StatHat` was missing an `token` value.
+// That value is set usually set like this: `stathat.New().Token("sometoken").EZKey("somekey")` (both `Token` and `EZKey` are optional, but various methods need one or the other to have been set).
+var ErrMissingToken = errors.New("missing token")
+
+// ErrMissingEZKey means the `StatHat` was missing an `ezkey` value.
+// That value is set usually set like this: `stathat.New().Token("sometoken").EZKey("somekey")` (both `Token` and `EZKey` are optional, but various methods need one or the other to have been set).
+var ErrMissingEZKey = errors.New("missing ezkey")
+
+// New returns a StatHat using the provided access token (see https://www.stathat.com/access) and ezkey.
+func New() StatHat {
+	return StatHat{}
 }
 
-func (s StatHat) urlPrefix() string {
-	return `https://www.stathat.com/x/` + s.String()
+// Token sets the access token.
+// It returns an updated StatHat with the token added.  It does not modify the original StatHat.
+func (s StatHat) Token(token string) StatHat {
+	s.token = token
+	return s
+}
+
+// EZKey sets the ezkey value.
+// It returns an updated StatHat with the token added.  It does not modify the original StatHat.
+func (s StatHat) EZKey(ezkey string) StatHat {
+	s.ezkey = ezkey
+	return s
+}
+
+func (s StatHat) apiPrefix() string {
+	return `https://www.stathat.com/x/` + s.token
+}
+
+func (s StatHat) ezPrefix() string {
+	return `https://api.stathat.com/ez`
+}
+
+func (s StatHat) classicPrefix() string {
+	return `https://api.stathat.com/c`
 }
