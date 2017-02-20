@@ -13,6 +13,7 @@ type GetOptions struct {
 	Start    *time.Time
 	Period   string
 	Interval string
+	Summary  bool
 }
 
 // Dataset is a dataset
@@ -29,10 +30,12 @@ type Datapoint struct {
 	Time      time.Time `json:"-"`
 }
 
-// Get returns a data for a stat.
+// Get returns data for a stat.
 // If `start` is nil, StatHat will use their default of `start = now - period`.
 // `period` is the span of time from which to return data, starting at `start` and ending at `start+period`.  This is in the same format as `interval`.
 // `interval` is in the format of `1h` meaning "one hour".  Other units available are in the set `[mhdwMy]`.
+// If `summary` is true, `interval` is ignored.  The `summary` flag causes this to instead provide a daily summary for the requested `period` in full days.
+// If `summary` is true but `period` is not, the default of `1w` is used.
 // See https://www.stathat.com/manual/export for accepted time unit format for `interval` and `period`.
 // `stats` can be range from one to five stats.  Stats listed beyond five are ignored.
 func (s StatHat) Get(opts GetOptions, stats ...string) ([]Dataset, error) {
@@ -58,8 +61,15 @@ func (s StatHat) Get(opts GetOptions, stats ...string) ([]Dataset, error) {
 		q.Add("start", strconv.FormatInt(opts.Start.Unix(), 10))
 	}
 
-	if len(opts.Period) > 0 || len(opts.Interval) > 0 {
-		q.Add("t", opts.Period+opts.Interval)
+	if opts.Summary {
+		if len(opts.Period) == 0 {
+			opts.Period = "1w"
+		}
+		q.Add("summary", opts.Period)
+	} else {
+		if len(opts.Period) > 0 || len(opts.Interval) > 0 {
+			q.Add("t", opts.Period+opts.Interval)
+		}
 	}
 
 	u.RawQuery = q.Encode()

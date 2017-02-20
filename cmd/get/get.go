@@ -12,6 +12,7 @@ import (
 var (
 	token    = kingpin.Arg("token", "StatHat access token (https://www.stathat.com/access)").Required().String()
 	stats    = kingpin.Arg("stats", "stat IDs").Required().Strings()
+	summary  = kingpin.Flag("summary", "daily summary").Short('d').Bool()
 	start    = kingpin.Flag("start", "data start").Short('s').Int64()
 	interval = kingpin.Flag("interval", "data interval").Short('i').String()
 	period   = kingpin.Flag("period", "data period").Short('p').String()
@@ -30,6 +31,7 @@ func main() {
 		Start:    &startTime,
 		Period:   *period,
 		Interval: *interval,
+		Summary:  *summary,
 	}, *stats...)
 	if err != nil {
 		fmt.Println(err.Error())
