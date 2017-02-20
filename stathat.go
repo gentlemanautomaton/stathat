@@ -16,12 +16,13 @@ var ErrMissingToken = errors.New("missing token")
 // That value is set usually set like this: `stathat.New().Token("sometoken").EZKey("somekey")` (both `Token` and `EZKey` are optional, but various methods need one or the other to have been set).
 var ErrMissingEZKey = errors.New("missing ezkey")
 
-// New returns a StatHat using the provided access token (see https://www.stathat.com/access) and ezkey.
+// New returns a StatHat.
+// You'll want to set either/both of the `Token` or `EZKey` values.
 func New() StatHat {
 	return StatHat{}
 }
 
-// Token sets the access token.
+// Token sets the access token (see https://www.stathat.com/access).
 // It returns an updated StatHat with the token added.  It does not modify the original StatHat.
 func (s StatHat) Token(token string) StatHat {
 	s.token = token
