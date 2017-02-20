@@ -3,7 +3,6 @@ package stathat
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -49,7 +48,6 @@ func (s StatHat) PostEZ(name string, kind Kind, v float64, t *time.Time) error {
 	}
 
 	u.RawQuery = q.Encode()
-	fmt.Println(u)
 	req, err := http.NewRequest(http.MethodPost, u.String(), nil)
 	if err != nil {
 		return err
