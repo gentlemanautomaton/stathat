@@ -56,11 +56,18 @@ func (s StatHat) PostEZ(name string, kind Kind, v float64, t *time.Time) error {
 	if err != nil {
 		return err
 	}
+	defer resp.Body.Close()
+
+	// StatHat may return HTTP Status Code 204 to indicate success.
+	// See: https://blog.stathat.com/2017/05/05/bandwidth.html
+	if resp.StatusCode == http.StatusNoContent {
+		return nil
+	}
+
 	var respJSON struct {
 		// {"msg":"stat deleted."}
 		Msg string
 	}
-	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return err
