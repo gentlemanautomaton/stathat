@@ -5,7 +5,7 @@ import (
 	"os"
 	"regexp"
 
-	"github.com/dustywilson/stathat"
+	"github.com/gentlemanautomaton/stathat"
 )
 
 func main() {

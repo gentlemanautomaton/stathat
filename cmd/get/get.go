@@ -5,7 +5,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/dustywilson/stathat"
+	"github.com/gentlemanautomaton/stathat"
 	kingpin "gopkg.in/alecthomas/kingpin.v2"
 )
 
