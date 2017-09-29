@@ -36,7 +36,7 @@ func (s StatHat) StatListAll() ([]StatItem, error) {
 	var all []StatItem
 	for {
 		list, err := s.StatList(offset)
-		offset = +len(list)
+		offset += len(list)
 		all = append(all, list...)
 		if err != nil {
 			return all, err
