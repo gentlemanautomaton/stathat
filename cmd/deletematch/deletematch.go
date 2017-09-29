@@ -39,8 +39,10 @@ func main() {
 		fmt.Println(err.Error())
 		os.Exit(1)
 	}
+	matched := 0
 	for _, stat := range list {
 		if match.MatchString(stat.Name) {
+			matched++
 			fmt.Printf("[%s] %s\n", stat.ID, stat.Name)
 			if mode == "DELETEMYDATA" {
 				msg, e := stat.Delete()
@@ -53,4 +55,5 @@ func main() {
 			}
 		}
 	}
+	fmt.Printf("%d matching stat(s).\n", matched)
 }
