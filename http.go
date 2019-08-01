@@ -8,7 +8,7 @@ import (
 // UserAgent string to be sent to StatHat.
 // Override this by assigning a string right to it.
 // This is encouraged.
-var UserAgent = "github.com/dustywilson/stathat"
+var UserAgent = "github.com/gentlemanautomaton/stathat"
 
 // ErrNotFound means the StatHat service reports that the requested object doesn't exist.
 var ErrNotFound = errors.New("not found")
