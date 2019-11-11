@@ -10,6 +10,10 @@ import (
 // This is a destructive call.  Do not take this lightly.
 // Deleted stats are able to be undeleted via https://www.stathat.com/v/stats/trash for 48 hours.
 func (s StatHat) DeleteStat(stat string) (string, error) {
+	if s.noop {
+		return "", nil
+	}
+
 	// return "", errors.New("Would be deleting this: " + s.urlPrefix() + `/stats/` + stat)
 	req, err := http.NewRequest(http.MethodDelete, s.apiPrefix()+`/stats/`+stat, nil)
 	if err != nil {

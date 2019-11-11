@@ -6,6 +6,7 @@ import "errors"
 type StatHat struct {
 	token string
 	ezkey string
+	noop  bool
 }
 
 // ErrMissingToken means the `StatHat` was missing an `token` value.
@@ -20,6 +21,15 @@ var ErrMissingEZKey = errors.New("missing ezkey")
 // You'll want to set either/both of the `Token` or `EZKey` values.
 func New() StatHat {
 	return StatHat{}
+}
+
+// Noop causes any stats to be silently dropped instead of being recorded.
+// This is useful at times when you want to opt out of recording stats but not want to unwire the stat calls.
+// Writes won't happen (deleting and stat value sending), but any reads will still fetch.
+// Writes will return nil for error, since they didn't fail but were simply ignored.
+func (s StatHat) Noop() StatHat {
+	s.noop = true
+	return s
 }
 
 // Token sets the access token (see https://www.stathat.com/access).

@@ -26,6 +26,10 @@ var ErrKindMissing = errors.New("kind missing")
 // If you supply a non-nil time, it'll use that as the time value, otherwise it will not send a time value.
 // This is probably what you want to do if posting stats.
 func (s StatHat) PostEZ(name string, kind Kind, v float64, t *time.Time) error {
+	if s.noop {
+		return nil
+	}
+
 	u, _ := url.Parse(s.ezPrefix())
 	q := u.Query()
 
