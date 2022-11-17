@@ -2,6 +2,7 @@ package stathat
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 )
@@ -12,16 +13,19 @@ import (
 func (s StatHat) StatList(offset int) ([]StatItem, error) {
 	req, err := http.NewRequest(http.MethodGet, s.apiPrefix()+`/statlist?offset=`+strconv.Itoa(offset), nil)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to prepare stat list request with offset %d: %w", offset, err)
 	}
 	resp, err := httpDo(req)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("failed to retrieve stat list with offset %d: %w", offset, err)
 	}
 	defer resp.Body.Close()
 	list := make([]StatItem, 0, 10000)
 	j := json.NewDecoder(resp.Body)
 	err = j.Decode(&list)
+	if err != nil {
+		return nil, fmt.Errorf("failed to process stat list with offset %d: %w", offset, err)
+	}
 	for i := range list {
 		list[i].stathat = s
 	}
