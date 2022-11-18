@@ -28,7 +28,7 @@ func (cmd CountCmd) Run(ctx context.Context) error {
 			matched++
 		}
 	}
-	if cmd.Match.Empty() && matched == 0 {
+	if cmd.Match.Empty() {
 		fmt.Printf("Total Stats: %d\n", total)
 	} else {
 		fmt.Printf("Matching Stats: %d/%d\n", matched, total)
