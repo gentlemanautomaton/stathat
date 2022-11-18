@@ -2,6 +2,7 @@ package stathat
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 )
@@ -23,11 +24,17 @@ func (s StatHat) DeleteStat(stat string) (string, error) {
 	if err != nil {
 		return "", err
 	}
+	defer resp.Body.Close()
+	if resp.StatusCode != http.StatusOK {
+		if resp.Status != "" {
+			return "", fmt.Errorf("unexpected http status code %d: %s", resp.StatusCode, resp.Status)
+		}
+		return "", fmt.Errorf("unexpected http status code %d", resp.StatusCode)
+	}
 	var respJSON struct {
 		// {"msg":"stat deleted."}
 		Msg string
 	}
-	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return "", err
